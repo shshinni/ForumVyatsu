@@ -7,7 +7,7 @@ import "./index.css";
 const router = createRouter({ routeTree });
 
 createRoot(document.getElementById("root")).render(
-  <StrictMode>
-    <RouterProvider router={router} />
-  </StrictMode>
+  //<StrictMode>
+  <RouterProvider router={router} />
+  //</StrictMode>
 );

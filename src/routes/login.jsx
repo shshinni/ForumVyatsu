@@ -11,7 +11,7 @@ export const Route = createFileRoute("/login")({
 });
 
 function Login() {
-  const { control, formState, handleSubmit, setError } = useForm({
+  const { control, formState, handleSubmit, setError, setValue } = useForm({
     mode: "onChange",
   });
 
@@ -42,6 +42,8 @@ function Login() {
         if (response.status === 200) {
           result = await response.json();
           setUser(result);
+          setValue("password", "");
+          setValue("login", "");
           navigate({ to: "/account" });
         }
       }

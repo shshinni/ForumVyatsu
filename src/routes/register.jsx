@@ -1,30 +1,52 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { Input } from "../components/Input";
 import { ChevronDownIcon } from "@heroicons/react/24/solid";
 import { Link } from "@tanstack/react-router";
 import { Controller, useForm } from "react-hook-form";
+import { RadioButton } from "../components/RadioButton";
+import { useContext } from "react";
+import { UserContext } from "../context/UserContext";
 
 export const Route = createFileRoute("/register")({
   component: Register,
 });
 
 function Register() {
-  const { control, formState, handleSubmit, setError } = useForm({
+  const navigate = useNavigate();
+  const { setUser } = useContext(UserContext);
+  const { control, formState, handleSubmit, setError, setValue } = useForm({
     mode: "onChange",
   });
   async function onsubmit(data) {
-    //console.log(data);
+    console.log(data);
     try {
-      const response = await fetch("http://127.0.0.1:8000/api/users/create", {
+      let response = await fetch("http://127.0.0.1:8000/api/users/create", {
         method: "post",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: "asij@hs.ru", ...data }),
+        body: JSON.stringify(data),
       });
       if (response.status === 409) {
         setError("login", { message: "Логин уже занят" });
       }
       if (response.status === 200) {
-        console.log(response);
+        let result = await response.json();
+        localStorage.setItem("token", result.access_JWT);
+
+        response = await fetch("http://127.0.0.1:8000/api/users/login_check", {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        });
+
+        if (response.status === 200) {
+          result = await response.json();
+          setValue("password", "");
+          setValue("repeatPassword", "");
+          setValue("login", "");
+          setUser(result);
+          navigate({ to: "/account" });
+        }
       }
     } catch (error) {
       console.error(error);
@@ -51,7 +73,7 @@ function Register() {
             <Input
               type="text"
               placeholder="Имя пользователя*"
-              error={formState.errors.username?.message}
+              error={formState.errors.user_name?.message}
               {...field}
             />
           )}
@@ -110,35 +132,33 @@ function Register() {
             />
           )}
         />
-        {/* <Input textPlaceholder={"Email*"} />
-        <Input textPlaceholder={"Пароль*"} />
-        <Input textPlaceholder={"Повторите пароль*"} />
-        <Input textPlaceholder={"Имя пользователя*"} /> */}
-        <span className="text-sm block mt-5 text-center">
+        <span className="text-sm block mt-8 text-center">
           К какой категории вы относитесь?*
         </span>
-        <div className="flex justify-between mt-3">
-          <label className="flex items-center">
-            <input
-              type="radio"
-              name="userType"
-              value="applicant"
-              className="mr-2 cursor-pointer accent-[#FE6B91]"
-              defaultChecked
-            />
-            <span className="text-sm font-light">Абитуриент</span>
-          </label>
 
-          <label className="flex items-center">
-            <input
-              type="radio"
-              name="userType"
-              value="student"
-              className="mr-2 cursor-pointer accent-[#FE6B91]"
-            />
-            <span className="text-sm font-light">Студент</span>
-          </label>
+        <div className="flex justify-between mt-3">
+          <Controller
+            control={control}
+            name="is_studen"
+            defaultValue={"0"}
+            render={({ field }) => (
+              <RadioButton
+                {...field}
+                value="0"
+                defaultChecked
+                label="Абитуриент"
+              />
+            )}
+          />
+          <Controller
+            control={control}
+            name="is_studen"
+            render={({ field }) => (
+              <RadioButton {...field} value="1" label="Студент" />
+            )}
+          />
         </div>
+
         <div className="flex justify-center mt-10">
           <button className="relative text-white bg-[#FE6B91] rounded-3xl w-full max-w-[260px] py-2 px-3 cursor-pointer">
             <span className="inline-block w-full text-center">

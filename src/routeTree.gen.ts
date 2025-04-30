@@ -14,10 +14,10 @@ import { Route as rootRoute } from './routes/__root'
 import { Route as RegisterImport } from './routes/register'
 import { Route as LoginImport } from './routes/login'
 import { Route as GroupsImport } from './routes/groups'
-import { Route as GroupImport } from './routes/group'
 import { Route as CreateGroupImport } from './routes/createGroup'
 import { Route as AccountImport } from './routes/account'
 import { Route as IndexImport } from './routes/index'
+import { Route as GroupGroupIdIndexImport } from './routes/group/$groupId/index'
 
 // Create/Update Routes
 
@@ -39,12 +39,6 @@ const GroupsRoute = GroupsImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
-const GroupRoute = GroupImport.update({
-  id: '/group',
-  path: '/group',
-  getParentRoute: () => rootRoute,
-} as any)
-
 const CreateGroupRoute = CreateGroupImport.update({
   id: '/createGroup',
   path: '/createGroup',
@@ -60,6 +54,12 @@ const AccountRoute = AccountImport.update({
 const IndexRoute = IndexImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const GroupGroupIdIndexRoute = GroupGroupIdIndexImport.update({
+  id: '/group/$groupId/',
+  path: '/group/$groupId/',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -88,13 +88,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CreateGroupImport
       parentRoute: typeof rootRoute
     }
-    '/group': {
-      id: '/group'
-      path: '/group'
-      fullPath: '/group'
-      preLoaderRoute: typeof GroupImport
-      parentRoute: typeof rootRoute
-    }
     '/groups': {
       id: '/groups'
       path: '/groups'
@@ -116,6 +109,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof RegisterImport
       parentRoute: typeof rootRoute
     }
+    '/group/$groupId/': {
+      id: '/group/$groupId/'
+      path: '/group/$groupId'
+      fullPath: '/group/$groupId'
+      preLoaderRoute: typeof GroupGroupIdIndexImport
+      parentRoute: typeof rootRoute
+    }
   }
 }
 
@@ -125,20 +125,20 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/account': typeof AccountRoute
   '/createGroup': typeof CreateGroupRoute
-  '/group': typeof GroupRoute
   '/groups': typeof GroupsRoute
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
+  '/group/$groupId': typeof GroupGroupIdIndexRoute
 }
 
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/account': typeof AccountRoute
   '/createGroup': typeof CreateGroupRoute
-  '/group': typeof GroupRoute
   '/groups': typeof GroupsRoute
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
+  '/group/$groupId': typeof GroupGroupIdIndexRoute
 }
 
 export interface FileRoutesById {
@@ -146,10 +146,10 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/account': typeof AccountRoute
   '/createGroup': typeof CreateGroupRoute
-  '/group': typeof GroupRoute
   '/groups': typeof GroupsRoute
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
+  '/group/$groupId/': typeof GroupGroupIdIndexRoute
 }
 
 export interface FileRouteTypes {
@@ -158,28 +158,28 @@ export interface FileRouteTypes {
     | '/'
     | '/account'
     | '/createGroup'
-    | '/group'
     | '/groups'
     | '/login'
     | '/register'
+    | '/group/$groupId'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/account'
     | '/createGroup'
-    | '/group'
     | '/groups'
     | '/login'
     | '/register'
+    | '/group/$groupId'
   id:
     | '__root__'
     | '/'
     | '/account'
     | '/createGroup'
-    | '/group'
     | '/groups'
     | '/login'
     | '/register'
+    | '/group/$groupId/'
   fileRoutesById: FileRoutesById
 }
 
@@ -187,20 +187,20 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AccountRoute: typeof AccountRoute
   CreateGroupRoute: typeof CreateGroupRoute
-  GroupRoute: typeof GroupRoute
   GroupsRoute: typeof GroupsRoute
   LoginRoute: typeof LoginRoute
   RegisterRoute: typeof RegisterRoute
+  GroupGroupIdIndexRoute: typeof GroupGroupIdIndexRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AccountRoute: AccountRoute,
   CreateGroupRoute: CreateGroupRoute,
-  GroupRoute: GroupRoute,
   GroupsRoute: GroupsRoute,
   LoginRoute: LoginRoute,
   RegisterRoute: RegisterRoute,
+  GroupGroupIdIndexRoute: GroupGroupIdIndexRoute,
 }
 
 export const routeTree = rootRoute
@@ -216,10 +216,10 @@ export const routeTree = rootRoute
         "/",
         "/account",
         "/createGroup",
-        "/group",
         "/groups",
         "/login",
-        "/register"
+        "/register",
+        "/group/$groupId/"
       ]
     },
     "/": {
@@ -231,9 +231,6 @@ export const routeTree = rootRoute
     "/createGroup": {
       "filePath": "createGroup.jsx"
     },
-    "/group": {
-      "filePath": "group.jsx"
-    },
     "/groups": {
       "filePath": "groups.jsx"
     },
@@ -242,6 +239,9 @@ export const routeTree = rootRoute
     },
     "/register": {
       "filePath": "register.jsx"
+    },
+    "/group/$groupId/": {
+      "filePath": "group/$groupId/index.jsx"
     }
   }
 }

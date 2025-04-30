@@ -11,7 +11,7 @@ import Container from "../components/Container";
 import PostButton from "../components/PostButton";
 import GroupButton from "../components/GroupButton";
 import { ArrowRightIcon } from "@heroicons/react/24/solid";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { UserContext } from "../context/UserContext";
 import { useContext } from "react";
 
@@ -34,12 +34,25 @@ export const Route = createFileRoute("/account")({
 });
 
 function Account() {
+  const [groups, setGroups] = useState([]);
   const [isEdit, setIsEdit] = useState(false);
   const { setUser, user } = useContext(UserContext);
   const navigate = useNavigate();
-  const handleKeyDown = (event) => {
+  const handleKeyDown = async (event) => {
     if (event.key === "Enter") {
       setIsEdit(false);
+
+      const response = await fetch(
+        `http://127.0.0.1:8000/api/users/changename/${event.target.value}`,
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+          //body: JSON.stringify({ new_name: event.target.value }),
+        }
+      );
+      console.log(response);
     }
   };
   function onChange(event) {
@@ -51,7 +64,40 @@ function Account() {
     setUser(null);
     navigate({ to: "/" });
   }
-
+  async function onClickSave() {
+    if (isEdit) {
+      await fetch(
+        `http://127.0.0.1:8000/api/users/changename/${user.username}`,
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
+      setIsEdit(false);
+    } else {
+      setIsEdit(true);
+    }
+  }
+  useEffect(() => {
+    getUserGroups();
+  }, []);
+  async function getUserGroups() {
+    const response = await fetch(
+      `http://127.0.0.1:8000/api/users/${user.id}/groups/`,
+      {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      }
+    );
+    if (response.status === 200) {
+      const result = await response.json();
+      setGroups((items) => [...items, ...result]);
+    }
+  }
   return (
     <Container>
       <div className="mb-10">
@@ -83,7 +129,7 @@ function Account() {
                 <div className="h-[1px] bg-black/50"></div>
               </div>
               <div className="flex gap-1 ml-4">
-                <button onClick={() => setIsEdit(!isEdit)}>
+                <button onClick={onClickSave}>
                   <img
                     src={editInfo}
                     className="cursor-pointer max-w-6"
@@ -101,8 +147,9 @@ function Account() {
               </div>
             </div>
 
-            <div className="font-light mt-3">почта</div>
-            <div className="font-light">статус</div>
+            <div className="font-light">
+              {user?.is_student ? "Студент" : "Абитуриент"}
+            </div>
             <div className="flex justify-end gap-5 mt-5">
               <button className="bg-[#A987DF] rounded-3xl py-1 px-4 cursor-pointer text-sm text-white">
                 Добавить пост
@@ -134,7 +181,13 @@ function Account() {
                 Сообщества
               </h2>
             </div>
-            <GroupButton />
+            {groups.map((items) => (
+              <GroupButton
+                key={items.id}
+                idGroup={items.group_id}
+                name={items.group_name}
+              />
+            ))}
           </div>
         </div>
       </div>
