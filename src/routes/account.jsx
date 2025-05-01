@@ -35,6 +35,7 @@ export const Route = createFileRoute("/account")({
 
 function Account() {
   const [groups, setGroups] = useState([]);
+  const [posts, setPosts] = useState([]);
   const [isEdit, setIsEdit] = useState(false);
   const { setUser, user } = useContext(UserContext);
   const navigate = useNavigate();
@@ -82,6 +83,7 @@ function Account() {
   }
   useEffect(() => {
     getUserGroups();
+    getUserPosts();
   }, []);
   async function getUserGroups() {
     const response = await fetch(
@@ -96,6 +98,22 @@ function Account() {
     if (response.status === 200) {
       const result = await response.json();
       setGroups((items) => [...items, ...result]);
+    }
+  }
+  async function getUserPosts() {
+    const response = await fetch(
+      `http://127.0.0.1:8000/api/users/${user.id}/posts/`,
+      {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      }
+    );
+    if (response.status === 200) {
+      const result = await response.json();
+      setPosts((items) => [...items, ...result]);
+      console.log(result);
     }
   }
   return (
@@ -170,10 +188,17 @@ function Account() {
                 Посты
               </h2>
             </div>
-            <PostButton />
-            <button className="block ml-auto mr-6 mb-2 cursor-pointer">
+            {posts.map((items) => (
+              <PostButton
+                key={items.id}
+                idPost={items.post_id}
+                name={items.post_name}
+              />
+            ))}
+
+            {/* <button className="block ml-auto mr-6 mb-2 cursor-pointer">
               <ArrowRightIcon className="size-5 text-[#FA7D9F]" />
-            </button>
+            </button> */}
           </div>
           <div className="border-[#8C64D8] border-dashed border rounded-xl bg-[#F6F3FC]">
             <div className="flex justify-center">

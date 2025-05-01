@@ -71,7 +71,7 @@ function Groups() {
             />
           ))
         ) : (
-          <div>Группы не найдены</div>
+          <div className="text-sm font-light">Группы не найдены</div>
         )}
       </div>
     </Container>

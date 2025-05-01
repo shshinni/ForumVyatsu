@@ -17,6 +17,7 @@ export const Route = createFileRoute("/group/$groupId/")({
 
 function Group() {
   const navigate = useNavigate();
+  const [posts, setPosts] = useState([]);
   const params = useParams({ strict: false });
   const { user } = useContext(UserContext);
   const [group, setGroup] = useState({});
@@ -69,28 +70,26 @@ function Group() {
       );
     }
   }, [user?.id, params.groupId]);
-
+  const getPosts = useCallback(async () => {
+    const response = await fetch(
+      `http://127.0.0.1:8000/api/groups/${params.groupId}/posts`,
+      {
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+      }
+    );
+    if (response.status === 200) {
+      setPosts(await response.json());
+    }
+  }, [params.groupId]);
   useEffect(() => {
     async function query() {
       await getGroup();
       await getUserGroups();
       await getMembers();
+      await getPosts();
     }
     query();
-  }, [getGroup, getUserGroups, getMembers]);
-
-  // async function getGroup() {
-  //   const response = await fetch(
-  //     `http://127.0.0.1:8000/api/groups/${params.groupId}/`,
-  //     {
-  //       method: "GET",
-  //     }
-  //   );
-  //   if (response.status === 200) {
-  //     const result = await response.json();
-  //     setGroup((item) => ({ ...item, ...result }));
-  //   }
-  // }
+  }, [getGroup, getUserGroups, getMembers, getPosts]);
 
   async function onClickFollow() {
     const response = await fetch(
@@ -140,22 +139,6 @@ function Group() {
     }
   }
 
-  // async function getUserGroups() {
-  //   const response = await fetch(
-  //     `http://127.0.0.1:8000/api/users/${user.id}/groups/`,
-  //     {
-  //       method: "GET",
-  //       headers: {
-  //         Authorization: `Bearer ${localStorage.getItem("token")}`,
-  //       },
-  //     }
-  //   );
-  //   if (response.status === 200) {
-  //     const result = await response.json();
-  //     setGroups((items) => [...items, ...result]);
-  //   }
-  // }
-
   return (
     <Container>
       <div>
@@ -175,6 +158,7 @@ function Group() {
             <div className="font-light mt-5">{group.description}</div>
             <div className="flex justify-end gap-5 mt-9">
               {user?.id &&
+                !isAdmin &&
                 (isFollow ? (
                   <button
                     onClick={onClickLeft}
@@ -190,7 +174,7 @@ function Group() {
                     Подписаться
                   </button>
                 ))}
-              {user?.id && (
+              {user?.id && isFollow && (
                 <a
                   href="/createGroup"
                   className="bg-[#A987DF] rounded-3xl py-1 px-4 cursor-pointer text-sm text-white"
@@ -215,7 +199,13 @@ function Group() {
               Посты сообщества
             </h2>
           </div>
-          <PostButton />
+          {posts.map((items) => (
+            <PostButton
+              key={items.id}
+              idPost={items.post_id}
+              name={items.post_name}
+            />
+          ))}
           <button className="block ml-auto mr-6 mb-2 cursor-pointer">
             <ArrowRightIcon className="size-5 text-[#FA7D9F]" />
           </button>
