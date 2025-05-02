@@ -18,6 +18,7 @@ import { Route as GroupsImport } from './routes/groups'
 import { Route as CreateGroupImport } from './routes/createGroup'
 import { Route as AccountImport } from './routes/account'
 import { Route as IndexImport } from './routes/index'
+import { Route as PostPostIdIndexImport } from './routes/post/$postId/index'
 import { Route as GroupGroupIdIndexImport } from './routes/group/$groupId/index'
 
 // Create/Update Routes
@@ -61,6 +62,12 @@ const AccountRoute = AccountImport.update({
 const IndexRoute = IndexImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const PostPostIdIndexRoute = PostPostIdIndexImport.update({
+  id: '/post/$postId/',
+  path: '/post/$postId/',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -130,6 +137,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof GroupGroupIdIndexImport
       parentRoute: typeof rootRoute
     }
+    '/post/$postId/': {
+      id: '/post/$postId/'
+      path: '/post/$postId'
+      fullPath: '/post/$postId'
+      preLoaderRoute: typeof PostPostIdIndexImport
+      parentRoute: typeof rootRoute
+    }
   }
 }
 
@@ -144,6 +158,7 @@ export interface FileRoutesByFullPath {
   '/posts': typeof PostsRoute
   '/register': typeof RegisterRoute
   '/group/$groupId': typeof GroupGroupIdIndexRoute
+  '/post/$postId': typeof PostPostIdIndexRoute
 }
 
 export interface FileRoutesByTo {
@@ -155,6 +170,7 @@ export interface FileRoutesByTo {
   '/posts': typeof PostsRoute
   '/register': typeof RegisterRoute
   '/group/$groupId': typeof GroupGroupIdIndexRoute
+  '/post/$postId': typeof PostPostIdIndexRoute
 }
 
 export interface FileRoutesById {
@@ -167,6 +183,7 @@ export interface FileRoutesById {
   '/posts': typeof PostsRoute
   '/register': typeof RegisterRoute
   '/group/$groupId/': typeof GroupGroupIdIndexRoute
+  '/post/$postId/': typeof PostPostIdIndexRoute
 }
 
 export interface FileRouteTypes {
@@ -180,6 +197,7 @@ export interface FileRouteTypes {
     | '/posts'
     | '/register'
     | '/group/$groupId'
+    | '/post/$postId'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -190,6 +208,7 @@ export interface FileRouteTypes {
     | '/posts'
     | '/register'
     | '/group/$groupId'
+    | '/post/$postId'
   id:
     | '__root__'
     | '/'
@@ -200,6 +219,7 @@ export interface FileRouteTypes {
     | '/posts'
     | '/register'
     | '/group/$groupId/'
+    | '/post/$postId/'
   fileRoutesById: FileRoutesById
 }
 
@@ -212,6 +232,7 @@ export interface RootRouteChildren {
   PostsRoute: typeof PostsRoute
   RegisterRoute: typeof RegisterRoute
   GroupGroupIdIndexRoute: typeof GroupGroupIdIndexRoute
+  PostPostIdIndexRoute: typeof PostPostIdIndexRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
@@ -223,6 +244,7 @@ const rootRouteChildren: RootRouteChildren = {
   PostsRoute: PostsRoute,
   RegisterRoute: RegisterRoute,
   GroupGroupIdIndexRoute: GroupGroupIdIndexRoute,
+  PostPostIdIndexRoute: PostPostIdIndexRoute,
 }
 
 export const routeTree = rootRoute
@@ -242,7 +264,8 @@ export const routeTree = rootRoute
         "/login",
         "/posts",
         "/register",
-        "/group/$groupId/"
+        "/group/$groupId/",
+        "/post/$postId/"
       ]
     },
     "/": {
@@ -268,6 +291,9 @@ export const routeTree = rootRoute
     },
     "/group/$groupId/": {
       "filePath": "group/$groupId/index.jsx"
+    },
+    "/post/$postId/": {
+      "filePath": "post/$postId/index.jsx"
     }
   }
 }
