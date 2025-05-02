@@ -27,9 +27,13 @@ export default function Header() {
             >
               Сообщества
             </Link>
-            <a className=" text-white transition-colors hover:underline cursor-pointer">
+            <Link
+              href="/posts"
+              className=" text-white transition-colors hover:underline cursor-pointer"
+            >
               Посты
-            </a>
+            </Link>
+
             {user ? (
               <Link
                 href="/account"

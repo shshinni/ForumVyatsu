@@ -188,13 +188,17 @@ function Account() {
                 Посты
               </h2>
             </div>
-            {posts.map((items) => (
-              <PostButton
-                key={items.id}
-                idPost={items.post_id}
-                name={items.post_name}
-              />
-            ))}
+            <div className="px-7">
+              {posts.map((items) => (
+                <PostButton
+                  key={items.id}
+                  idPost={items.post_id}
+                  name={items.post_name}
+                  comments_num={items.comments_num}
+                  creation_time={items.creation_time}
+                />
+              ))}
+            </div>
 
             {/* <button className="block ml-auto mr-6 mb-2 cursor-pointer">
               <ArrowRightIcon className="size-5 text-[#FA7D9F]" />

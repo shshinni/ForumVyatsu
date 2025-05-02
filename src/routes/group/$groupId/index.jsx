@@ -48,10 +48,10 @@ function Group() {
     if (response.status === 200) {
       const result = await response.json();
       setIsAdmin(
-        result.some((item) => item.user_id === user.id && item.role_id === 1)
+        result.some((item) => item.user_id === user?.id && item.role_id === 1)
       );
     }
-  }, [params.groupId]);
+  }, [params.groupId, user?.id]);
   const getUserGroups = useCallback(async () => {
     const response = await fetch(
       `http://127.0.0.1:8000/api/users/${user.id}/groups/`,
@@ -72,10 +72,7 @@ function Group() {
   }, [user?.id, params.groupId]);
   const getPosts = useCallback(async () => {
     const response = await fetch(
-      `http://127.0.0.1:8000/api/groups/${params.groupId}/posts`,
-      {
-        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-      }
+      `http://127.0.0.1:8000/api/groups/${params.groupId}/posts`
     );
     if (response.status === 200) {
       setPosts(await response.json());
@@ -84,12 +81,15 @@ function Group() {
   useEffect(() => {
     async function query() {
       await getGroup();
-      await getUserGroups();
+      if (user?.id) {
+        await getUserGroups();
+      }
+
       await getMembers();
       await getPosts();
     }
     query();
-  }, [getGroup, getUserGroups, getMembers, getPosts]);
+  }, [getGroup, getUserGroups, getMembers, getPosts, user?.id]);
 
   async function onClickFollow() {
     const response = await fetch(
@@ -199,13 +199,18 @@ function Group() {
               Посты сообщества
             </h2>
           </div>
-          {posts.map((items) => (
-            <PostButton
-              key={items.id}
-              idPost={items.post_id}
-              name={items.post_name}
-            />
-          ))}
+          <div className="px-7">
+            {posts.map((items) => (
+              <PostButton
+                key={items.id}
+                idPost={items.post_id}
+                name={items.post_name}
+                comments_num={items.comments_num}
+                creation_time={items.creation_time}
+              />
+            ))}
+          </div>
+
           <button className="block ml-auto mr-6 mb-2 cursor-pointer">
             <ArrowRightIcon className="size-5 text-[#FA7D9F]" />
           </button>
