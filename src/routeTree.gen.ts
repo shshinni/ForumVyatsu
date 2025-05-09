@@ -15,6 +15,7 @@ import { Route as RegisterImport } from './routes/register'
 import { Route as PostsImport } from './routes/posts'
 import { Route as LoginImport } from './routes/login'
 import { Route as GroupsImport } from './routes/groups'
+import { Route as GroupApprovalImport } from './routes/groupApproval'
 import { Route as CreatePostImport } from './routes/createPost'
 import { Route as CreateGroupImport } from './routes/createGroup'
 import { Route as CreateCommentImport } from './routes/createComment'
@@ -46,6 +47,12 @@ const LoginRoute = LoginImport.update({
 const GroupsRoute = GroupsImport.update({
   id: '/groups',
   path: '/groups',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const GroupApprovalRoute = GroupApprovalImport.update({
+  id: '/groupApproval',
+  path: '/groupApproval',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -130,6 +137,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CreatePostImport
       parentRoute: typeof rootRoute
     }
+    '/groupApproval': {
+      id: '/groupApproval'
+      path: '/groupApproval'
+      fullPath: '/groupApproval'
+      preLoaderRoute: typeof GroupApprovalImport
+      parentRoute: typeof rootRoute
+    }
     '/groups': {
       id: '/groups'
       path: '/groups'
@@ -183,6 +197,7 @@ export interface FileRoutesByFullPath {
   '/createComment': typeof CreateCommentRoute
   '/createGroup': typeof CreateGroupRoute
   '/createPost': typeof CreatePostRoute
+  '/groupApproval': typeof GroupApprovalRoute
   '/groups': typeof GroupsRoute
   '/login': typeof LoginRoute
   '/posts': typeof PostsRoute
@@ -197,6 +212,7 @@ export interface FileRoutesByTo {
   '/createComment': typeof CreateCommentRoute
   '/createGroup': typeof CreateGroupRoute
   '/createPost': typeof CreatePostRoute
+  '/groupApproval': typeof GroupApprovalRoute
   '/groups': typeof GroupsRoute
   '/login': typeof LoginRoute
   '/posts': typeof PostsRoute
@@ -212,6 +228,7 @@ export interface FileRoutesById {
   '/createComment': typeof CreateCommentRoute
   '/createGroup': typeof CreateGroupRoute
   '/createPost': typeof CreatePostRoute
+  '/groupApproval': typeof GroupApprovalRoute
   '/groups': typeof GroupsRoute
   '/login': typeof LoginRoute
   '/posts': typeof PostsRoute
@@ -228,6 +245,7 @@ export interface FileRouteTypes {
     | '/createComment'
     | '/createGroup'
     | '/createPost'
+    | '/groupApproval'
     | '/groups'
     | '/login'
     | '/posts'
@@ -241,6 +259,7 @@ export interface FileRouteTypes {
     | '/createComment'
     | '/createGroup'
     | '/createPost'
+    | '/groupApproval'
     | '/groups'
     | '/login'
     | '/posts'
@@ -254,6 +273,7 @@ export interface FileRouteTypes {
     | '/createComment'
     | '/createGroup'
     | '/createPost'
+    | '/groupApproval'
     | '/groups'
     | '/login'
     | '/posts'
@@ -269,6 +289,7 @@ export interface RootRouteChildren {
   CreateCommentRoute: typeof CreateCommentRoute
   CreateGroupRoute: typeof CreateGroupRoute
   CreatePostRoute: typeof CreatePostRoute
+  GroupApprovalRoute: typeof GroupApprovalRoute
   GroupsRoute: typeof GroupsRoute
   LoginRoute: typeof LoginRoute
   PostsRoute: typeof PostsRoute
@@ -283,6 +304,7 @@ const rootRouteChildren: RootRouteChildren = {
   CreateCommentRoute: CreateCommentRoute,
   CreateGroupRoute: CreateGroupRoute,
   CreatePostRoute: CreatePostRoute,
+  GroupApprovalRoute: GroupApprovalRoute,
   GroupsRoute: GroupsRoute,
   LoginRoute: LoginRoute,
   PostsRoute: PostsRoute,
@@ -306,6 +328,7 @@ export const routeTree = rootRoute
         "/createComment",
         "/createGroup",
         "/createPost",
+        "/groupApproval",
         "/groups",
         "/login",
         "/posts",
@@ -328,6 +351,9 @@ export const routeTree = rootRoute
     },
     "/createPost": {
       "filePath": "createPost.jsx"
+    },
+    "/groupApproval": {
+      "filePath": "groupApproval.jsx"
     },
     "/groups": {
       "filePath": "groups.jsx"
