@@ -2,6 +2,7 @@ import {
   createFileRoute,
   useParams,
   useNavigate,
+  Link,
 } from "@tanstack/react-router";
 import { useCallback, useEffect, useState } from "react";
 import Container from "../../../components/Container";
@@ -23,6 +24,7 @@ function Group() {
   const [group, setGroup] = useState({});
   const [isAdmin, setIsAdmin] = useState(false);
   const [isFollow, setIsFollow] = useState(false);
+
   const getGroup = useCallback(async () => {
     const response = await fetch(
       `http://127.0.0.1:8000/api/groups/${params.groupId}/`,
@@ -175,12 +177,13 @@ function Group() {
                   </button>
                 ))}
               {user?.id && isFollow && (
-                <a
-                  href="/createGroup"
+                <Link
+                  to={"/createPost"}
+                  search={{ groupId: params.groupId }}
                   className="bg-[#A987DF] rounded-3xl py-1 px-4 cursor-pointer text-sm text-white"
                 >
                   Добавить пост
-                </a>
+                </Link>
               )}
               {user?.id && isAdmin && (
                 <button
@@ -203,7 +206,7 @@ function Group() {
             {posts.map((items) => (
               <PostButton
                 key={items.id}
-                idPost={items.post_id}
+                idPost={items.id}
                 name={items.post_name}
                 comments_num={items.comments_num}
                 creation_time={items.creation_time}

@@ -15,7 +15,9 @@ import { Route as RegisterImport } from './routes/register'
 import { Route as PostsImport } from './routes/posts'
 import { Route as LoginImport } from './routes/login'
 import { Route as GroupsImport } from './routes/groups'
+import { Route as CreatePostImport } from './routes/createPost'
 import { Route as CreateGroupImport } from './routes/createGroup'
+import { Route as CreateCommentImport } from './routes/createComment'
 import { Route as AccountImport } from './routes/account'
 import { Route as IndexImport } from './routes/index'
 import { Route as PostPostIdIndexImport } from './routes/post/$postId/index'
@@ -47,9 +49,21 @@ const GroupsRoute = GroupsImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
+const CreatePostRoute = CreatePostImport.update({
+  id: '/createPost',
+  path: '/createPost',
+  getParentRoute: () => rootRoute,
+} as any)
+
 const CreateGroupRoute = CreateGroupImport.update({
   id: '/createGroup',
   path: '/createGroup',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const CreateCommentRoute = CreateCommentImport.update({
+  id: '/createComment',
+  path: '/createComment',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -95,11 +109,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AccountImport
       parentRoute: typeof rootRoute
     }
+    '/createComment': {
+      id: '/createComment'
+      path: '/createComment'
+      fullPath: '/createComment'
+      preLoaderRoute: typeof CreateCommentImport
+      parentRoute: typeof rootRoute
+    }
     '/createGroup': {
       id: '/createGroup'
       path: '/createGroup'
       fullPath: '/createGroup'
       preLoaderRoute: typeof CreateGroupImport
+      parentRoute: typeof rootRoute
+    }
+    '/createPost': {
+      id: '/createPost'
+      path: '/createPost'
+      fullPath: '/createPost'
+      preLoaderRoute: typeof CreatePostImport
       parentRoute: typeof rootRoute
     }
     '/groups': {
@@ -152,7 +180,9 @@ declare module '@tanstack/react-router' {
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/account': typeof AccountRoute
+  '/createComment': typeof CreateCommentRoute
   '/createGroup': typeof CreateGroupRoute
+  '/createPost': typeof CreatePostRoute
   '/groups': typeof GroupsRoute
   '/login': typeof LoginRoute
   '/posts': typeof PostsRoute
@@ -164,7 +194,9 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/account': typeof AccountRoute
+  '/createComment': typeof CreateCommentRoute
   '/createGroup': typeof CreateGroupRoute
+  '/createPost': typeof CreatePostRoute
   '/groups': typeof GroupsRoute
   '/login': typeof LoginRoute
   '/posts': typeof PostsRoute
@@ -177,7 +209,9 @@ export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
   '/account': typeof AccountRoute
+  '/createComment': typeof CreateCommentRoute
   '/createGroup': typeof CreateGroupRoute
+  '/createPost': typeof CreatePostRoute
   '/groups': typeof GroupsRoute
   '/login': typeof LoginRoute
   '/posts': typeof PostsRoute
@@ -191,7 +225,9 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/account'
+    | '/createComment'
     | '/createGroup'
+    | '/createPost'
     | '/groups'
     | '/login'
     | '/posts'
@@ -202,7 +238,9 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/account'
+    | '/createComment'
     | '/createGroup'
+    | '/createPost'
     | '/groups'
     | '/login'
     | '/posts'
@@ -213,7 +251,9 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/account'
+    | '/createComment'
     | '/createGroup'
+    | '/createPost'
     | '/groups'
     | '/login'
     | '/posts'
@@ -226,7 +266,9 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AccountRoute: typeof AccountRoute
+  CreateCommentRoute: typeof CreateCommentRoute
   CreateGroupRoute: typeof CreateGroupRoute
+  CreatePostRoute: typeof CreatePostRoute
   GroupsRoute: typeof GroupsRoute
   LoginRoute: typeof LoginRoute
   PostsRoute: typeof PostsRoute
@@ -238,7 +280,9 @@ export interface RootRouteChildren {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AccountRoute: AccountRoute,
+  CreateCommentRoute: CreateCommentRoute,
   CreateGroupRoute: CreateGroupRoute,
+  CreatePostRoute: CreatePostRoute,
   GroupsRoute: GroupsRoute,
   LoginRoute: LoginRoute,
   PostsRoute: PostsRoute,
@@ -259,7 +303,9 @@ export const routeTree = rootRoute
       "children": [
         "/",
         "/account",
+        "/createComment",
         "/createGroup",
+        "/createPost",
         "/groups",
         "/login",
         "/posts",
@@ -274,8 +320,14 @@ export const routeTree = rootRoute
     "/account": {
       "filePath": "account.jsx"
     },
+    "/createComment": {
+      "filePath": "createComment.jsx"
+    },
     "/createGroup": {
       "filePath": "createGroup.jsx"
+    },
+    "/createPost": {
+      "filePath": "createPost.jsx"
     },
     "/groups": {
       "filePath": "groups.jsx"

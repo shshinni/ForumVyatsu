@@ -169,9 +169,12 @@ function Account() {
               {user?.is_student ? "Студент" : "Абитуриент"}
             </div>
             <div className="flex justify-end gap-5 mt-5">
-              <button className="bg-[#A987DF] rounded-3xl py-1 px-4 cursor-pointer text-sm text-white">
+              <Link
+                href="/createPost"
+                className="bg-[#A987DF] rounded-3xl py-1 px-4 cursor-pointer text-sm text-white"
+              >
                 Добавить пост
-              </button>
+              </Link>
               <Link
                 href="/createGroup"
                 className="bg-[#A987DF] rounded-3xl py-1 px-4 cursor-pointer text-sm text-white"
@@ -192,7 +195,7 @@ function Account() {
               {posts.map((items) => (
                 <PostButton
                   key={items.id}
-                  idPost={items.post_id}
+                  idPost={items.id}
                   name={items.post_name}
                   comments_num={items.comments_num}
                   creation_time={items.creation_time}

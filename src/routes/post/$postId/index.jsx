@@ -1,73 +1,147 @@
 import React from "react";
-import { createFileRoute } from "@tanstack/react-router";
+import { useCallback, useEffect, useState } from "react";
+import { createFileRoute, Link, useParams } from "@tanstack/react-router";
+import Container from "../../../components/Container";
+import lkPhoto from "/lkphoto.svg";
 
+function formatCreationTime(isoString) {
+  const date = new Date(isoString);
+  const options = { day: "numeric", month: "long", year: "numeric" };
+  return date.toLocaleDateString("ru-RU", options);
+}
 export const Route = createFileRoute("/post/$postId/")({
   component: Post,
 });
 
 function Post() {
-  const post = {
-    title: "Что сподвигло Вас пойти на ИВТ?",
-    description:
-      "Я абитуриент, планирую поступать на специальность “Информатика и вычислительная техника”. Подскажите, пожалуйста, трудно ли учиться на данной специальности и что сподвигло Вас выбрать именно это направление?",
-    createdAt: "02.04.2024 в 23:22",
-    urgent: true,
-    answers: [
+  const params = useParams({ strict: false });
+  const [post, setPost] = useState({});
+  const [comments, setComments] = useState([]);
+  const [tags, setTags] = useState([]);
+
+  console.log(params.postId);
+  const GetPost = useCallback(async () => {
+    const response = await fetch(
+      `http://127.0.0.1:8000/api/posts/${params.postId}/`,
       {
-        username: "Stsxvl",
-        email: "raibcenkonasta18@gmail.com",
-        createdAt: "02.04.2024 в 23:22",
-      },
+        method: "GET",
+      }
+    );
+    if (response.status === 200) {
+      const result = await response.json();
+      setPost(result[0]);
+    }
+  }, [params.postId]);
+
+  const GetComments = useCallback(async () => {
+    const response = await fetch(
+      `http://127.0.0.1:8000/api/posts/${params.postId}/comments/`,
       {
-        username: "Giraf",
-        email: "ttttrrrbbb@gmail.com",
-        createdAt: "02.04.2024 в 23:34",
-      },
+        method: "GET",
+      }
+    );
+    if (response.status === 200) {
+      const result = await response.json();
+      setComments(result);
+    }
+  }, [params.postId]);
+
+  const GetTags = useCallback(async () => {
+    const response = await fetch(
+      `http://127.0.0.1:8000/api/posts/${params.postId}/tags/`,
       {
-        username: "Ctrreell",
-        email: "hhhggfi@yandex.ru",
-        createdAt: "02.04.2024 в 23:42",
-      },
-    ],
-  };
+        method: "GET",
+      }
+    );
+    if (response.status === 200) {
+      const result = await response.json();
+      setTags(result);
+    }
+  }, [params.postId]);
+
+  useEffect(() => {
+    async function query() {
+      await GetPost();
+      await GetComments();
+      await GetTags();
+    }
+    query();
+  }, [GetPost, GetComments, GetTags]);
 
   return (
-    <div className="min-h-screen flex flex-col items-center bg-white p-8">
-      <div className="bg-pink-100 p-8 rounded-3xl w-full max-w-3xl shadow-md">
-        <h1 className="text-2xl font-bold mb-4">
-          {post.title}
-          {post.urgent && (
-            <span className="ml-4 bg-pink-400 text-white px-3 py-1 rounded-full text-xs font-bold">
-              СРОЧНО
-            </span>
-          )}
-        </h1>
-        <p className="mb-4">{post.description}</p>
-        <div className="inline-block bg-white px-4 py-1 rounded-full font-bold mb-6">
-          {post.createdAt}
+    <Container>
+      <div className="flex flex-col items-center bg-white">
+        <div className="bg-pink-100 px-5 py-4 rounded-3xl w-full shadow-md">
+          <div className="flex justify-between">
+            <div className="text-2xl font-bold mb-4">{post.post_name}</div>
+            <div>
+              {!!post.isUrgently && (
+                <span className="bg-pink-400 text-white px-3 py-1 rounded-full text-sm font-light uppercase">
+                  Срочно
+                </span>
+              )}
+            </div>
+          </div>
+          <p className="mb-4">{post.post_text}</p>
+
+          <div className="flex flex-wrap gap-4 mt-8 mb-4">
+            {tags?.map((tag) => (
+              <div
+                key={tag.id}
+                className="rounded-2xl px-3 py-2 bg-purple-100 text-purple-800 text-sm flex-shrink-0"
+              >
+                <span>#{tag.tag_name}</span>
+              </div>
+            ))}
+          </div>
+
+          <div className="flex justify-between items-center">
+            <div className="inline-block bg-white  rounded-full px-2 py-1 mb-6">
+              {formatCreationTime(post.creation_time)}
+            </div>
+            <Link
+              to={"/createComment"}
+              search={{ postId: params.postId }}
+              className="rounded-2xl bg-pink-300 px-2 py-1 mb-6 text-white font-light"
+            >
+              Ответить
+            </Link>
+          </div>
+          <div className="flex items-center border-2 border-pink-400 rounded-2xl px-3 py-2 bg-white">
+            <img
+              src={lkPhoto}
+              className="max-w-10 rounded-3xl"
+              alt="Picture Account Group"
+            />
+            <span className="ml-5">{post.user_name}</span>
+          </div>
         </div>
 
-        {/* Ответы */}
-        {post.answers.map((answer, idx) => (
+        {comments?.map((comment) => (
           <div
-            key={idx}
-            className={`p-4 rounded-2xl shadow-md mb-6 ${
-              idx === 0 ? "bg-white" : "bg-purple-100"
-            }`}
+            key={comment.id}
+            className="bg-[#F6EAFF] mt-8 rounded-2xl w-full px-5 py-4 "
           >
-            <p className="font-semibold">{answer.username}</p>
-            <p className="text-gray-500">{answer.email}</p>
-            {idx !== 0 && (
-              <>
-                <div className="mt-2 text-sm">Ответ на вопрос</div>
-                <div className="inline-block bg-white px-4 py-1 rounded-full font-bold mt-2">
-                  {answer.createdAt}
-                </div>
-              </>
-            )}
+            <div className="flex items-center mb-2">
+              <img
+                src={lkPhoto}
+                className="max-w-10 rounded-3xl"
+                alt="Picture Account Group"
+              />
+              <span className="ml-3">{comment.user_name}</span>
+            </div>
+
+            <div className="h-[1px] bg-black/50 "></div>
+            <div className="font-light mt-3 mb-2">{comment.comment_text}</div>
+            <div className="flex justify-between">
+              <div className="bg-white rounded-2xl px-2 py-1">
+                {formatCreationTime(comment.creation_time)}
+              </div>
+              {/* <button>удалить комментарий</button> */}
+            </div>
           </div>
         ))}
       </div>
-    </div>
+    </Container>
   );
 }

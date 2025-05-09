@@ -16,8 +16,10 @@ function Posts() {
   const [posts, setPosts] = useState([]);
   const [filteredPosts, setFilteredPosts] = useState([]);
   const [searchString, setSearchString] = useState("");
+  const [tags, setTags] = useState([]);
   useEffect(() => {
     getPosts();
+    getTags();
   }, []);
   async function getPosts() {
     const response = await fetch(`http://127.0.0.1:8000/api/posts/`, {
@@ -45,6 +47,15 @@ function Posts() {
   }
   function onSearchPosts(event) {
     setSearchString(event.target.value.toLowerCase());
+  }
+  async function getTags() {
+    const response = await fetch(`http://127.0.0.1:8000/api/tags/`, {
+      method: "GET",
+    });
+    if (response.status === 200) {
+      const result = await response.json();
+      setTags(result);
+    }
   }
   return (
     <Container>
@@ -78,15 +89,11 @@ function Posts() {
             </div>
 
             {/* Заголовки */}
-            <div className="w-full flex items-center justify-between p-2 border-2 border-pink-400 rounded-full font-family text-center mb-6">
+            <div className="grid grid-cols-[1fr_auto_auto] px-3 py-2 items-center gap-4 text-sm border-2 border-pink-400 rounded-full mb-6 ">
               {/* Левая часть: Тема */}
-              <div className="flex-1 text-center pr-40">Тема</div>
-
-              {/* Правая часть: Ответы + Дата публикации */}
-              <div className="flex items-center gap-7 pr-4">
-                <span>Ответы</span>
-                <span>Дата публикации</span>
-              </div>
+              <span>Тема</span>
+              <span>Ответы</span>
+              <span>Дата публикации</span>
             </div>
 
             {/* Карточки тем */}
@@ -96,7 +103,7 @@ function Posts() {
                 filteredPosts.map((items) => (
                   <PostButton
                     key={items.id}
-                    idPost={items.post_id}
+                    idPost={items.id}
                     name={items.post_name}
                     comments_num={items.comments_num}
                     creation_time={items.creation_time}
@@ -136,8 +143,8 @@ function Posts() {
           </div>
 
           {/* Правая панель: Недавние темы и Популярные теги */}
-          <div className="w-72 flex flex-col">
-            {/* Недавние темы */}
+          {/* <div className="w-72 flex flex-col">
+            {/* Недавние темы 
             <div className="border-2 border-dashed border-purple-400 p-4 rounded-lg mb-7">
               <h2 className="font-family mb-4 text-center">Недавние темы</h2>
               {["ИВТ", "ИВТ", "ИВТ"].map((tag, idx) => (
@@ -148,22 +155,22 @@ function Posts() {
                   {tag}
                 </div>
               ))}
-            </div>
+            </div> */}
 
-            {/* Популярные теги */}
-            <div className="p-4">
-              <h2 className="font-family mb-3 text-center">Популярные теги</h2>
-              {Array(7)
-                .fill(null)
-                .map((_, idx) => (
-                  <div
-                    key={idx}
-                    className="h-8 mb-3 border-2 border-purple-400 rounded-full"
-                  ></div>
-                ))}
-            </div>
+          {/* Популярные теги */}
+          <div className="w-72">
+            <h2 className="mb-8 text-center">Популярные теги</h2>
+            {tags.map((tag) => (
+              <div
+                key={tag.id}
+                className="py-1 mb-3 border-2 border-purple-400 rounded-full"
+              >
+                <span className="text-sm font-light pl-3">{tag.tag_name}</span>
+              </div>
+            ))}
           </div>
         </div>
+        {/* </div> */}
       </div>
     </Container>
   );

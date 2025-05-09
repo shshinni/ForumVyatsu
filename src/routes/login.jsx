@@ -107,10 +107,10 @@ function Login() {
       </form>
 
       <div className="text-center mt-8 font-light text-xs">
-        <a className="cursor-pointer block mb-1">Забыли пароль?</a>
+        {/* <a className="cursor-pointer block mb-1">Забыли пароль?</a> */}
         <br />
         <div>
-          <span>Ещё нет аккаунта? </span>
+          <div className="mb-1.5">Ещё нет аккаунта? </div>
           <Link href="/register" className="underline cursor-pointer">
             Зарегистрироваться
           </Link>
