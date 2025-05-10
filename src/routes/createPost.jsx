@@ -177,7 +177,29 @@ function CreatePost() {
                           );
                         }
                       }}
-                      className="form-checkbox h-5 w-5 text-purple-500 rounded focus:ring-purple-500"
+                      id={`tag-${tag.id}`}
+                      className="
+              appearance-none 
+              h-5 w-5 
+              border-2 border-purple-400 
+              rounded 
+              relative
+              mr-2
+              checked:border-purple-600
+              checked:bg-purple-100
+              checked:after:content-['']
+              checked:after:absolute
+              checked:after:left-1/2
+              checked:after:top-1/2
+              checked:after:-translate-x-1/2
+              checked:after:-translate-y-1/2
+              checked:after:w-2
+              checked:after:h-3
+              checked:after:border-purple-600
+              checked:after:border-r-[1.5px]
+              checked:after:border-b-[1.5px]
+              checked:after:rotate-45
+            "
                     />
                     <span className="text-gray-700 font-light text-sm">
                       {tag.tag_name}
@@ -208,7 +230,27 @@ function CreatePost() {
                 type="checkbox"
                 checked={field.value === 1}
                 onChange={(e) => field.onChange(e.target.checked ? 1 : 0)}
-                className="form-checkbox h-5 w-5 text-purple-500 rounded focus:ring-purple-500"
+                className="appearance-none 
+              h-5 w-5 
+              border-2 border-pink-300 
+              rounded 
+              relative
+              mr-2
+              checked:border-pink-500
+              checked:bg-pink-100
+              checked:after:content-['']
+              checked:after:absolute
+              checked:after:left-1/2
+              checked:after:top-1/2
+              checked:after:-translate-x-1/2
+              checked:after:-translate-y-1/2
+              checked:after:w-2
+              checked:after:h-3
+              checked:after:border-pink-500
+              checked:after:border-r-[1.5px]
+              checked:after:border-b-[1.5px]
+              checked:after:rotate-45
+            "
               />
               <span className="text-sm font-light">
                 Добавить статус "Срочно"

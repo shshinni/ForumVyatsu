@@ -141,7 +141,6 @@ function Posts() {
             </button>
           </div>*/}
           </div>
-
           {/* Правая панель: Недавние темы и Популярные теги */}
           {/* <div className="w-72 flex flex-col">
             {/* Недавние темы 
@@ -156,16 +155,44 @@ function Posts() {
                 </div>
               ))}
             </div> */}
-
           {/* Популярные теги */}
           <div className="w-72">
             <h2 className="mb-8 text-center">Популярные теги</h2>
             {tags.map((tag) => (
-              <div
-                key={tag.id}
-                className="py-1 mb-3 border-2 border-purple-400 rounded-full"
-              >
-                <span className="text-sm font-light pl-3">{tag.tag_name}</span>
+              <div key={tag.id} className="flex items-center mb-3">
+                {/* Кастомный квадратный чекбокс */}
+                <input
+                  type="checkbox"
+                  id={`tag-${tag.id}`}
+                  className="
+          appearance-none 
+          h-7 w-7 
+          border-2 border-purple-400 
+          rounded 
+          relative
+          mr-2
+          checked:border-purple-600
+          checked:bg-purple-100
+          checked:after:content-['']
+          checked:after:absolute
+          checked:after:left-1/2
+          checked:after:top-1/2
+          checked:after:-translate-x-1/2
+          checked:after:-translate-y-1/2
+          checked:after:w-2
+          checked:after:h-3
+          checked:after:border-purple-600
+          checked:after:border-r-[1.5px]
+          checked:after:border-b-[1.5px]
+          checked:after:rotate-45
+        "
+                />
+                <label
+                  htmlFor={`tag-${tag.id}`}
+                  className="flex-1 py-1 border-2 border-purple-400 rounded-full text-sm font-light pl-3 cursor-pointer"
+                >
+                  {tag.tag_name}
+                </label>
               </div>
             ))}
           </div>
