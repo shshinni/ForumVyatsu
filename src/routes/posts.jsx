@@ -17,10 +17,19 @@ function Posts() {
   const [filteredPosts, setFilteredPosts] = useState([]);
   const [searchString, setSearchString] = useState("");
   const [tags, setTags] = useState([]);
+  const [currentUserId, setCurrentUserId] = useState(null);
+
   useEffect(() => {
     getPosts();
     getTags();
+    // Получаем ID текущего пользователя из токена
+    const token = localStorage.getItem("token");
+    if (token) {
+      const payload = JSON.parse(atob(token.split(".")[1]));
+      setCurrentUserId(payload.id);
+    }
   }, []);
+
   async function getPosts() {
     const response = await fetch(`http://127.0.0.1:8000/api/posts/`, {
       method: "GET",
@@ -55,6 +64,31 @@ function Posts() {
     if (response.status === 200) {
       const result = await response.json();
       setTags(result);
+    }
+  }
+  async function handleDeletePost(postId) {
+    try {
+      const response = await fetch(
+        `http://127.0.0.1:8000/api/posts/${postId}/`,
+        {
+          method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.detail || "Ошибка удаления");
+      }
+
+      // Обновляем оба состояния
+      setPosts((prev) => prev.filter((post) => post.id !== postId));
+      setFilteredPosts((prev) => prev.filter((post) => post.id !== postId));
+    } catch (error) {
+      console.error("Ошибка при удалении:", error.message);
+      alert("Не удалось удалить пост");
     }
   }
   return (
@@ -107,6 +141,8 @@ function Posts() {
                     name={items.post_name}
                     comments_num={items.comments_num}
                     creation_time={items.creation_time}
+                    onDelete={handleDeletePost}
+                    isAuthor={items.user_id === currentUserId}
                   />
                 ))
               ) : (

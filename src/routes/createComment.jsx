@@ -16,7 +16,7 @@ export const Route = createFileRoute("/createComment")({
       }
     );
     if (response.status !== 200) {
-      throw redirect({ to: "/" });
+      throw redirect({ to: "/login" });
     }
   },
   validateSearch: (search) => {

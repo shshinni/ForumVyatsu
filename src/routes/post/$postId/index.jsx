@@ -9,6 +9,7 @@ function formatCreationTime(isoString) {
   const options = { day: "numeric", month: "long", year: "numeric" };
   return date.toLocaleDateString("ru-RU", options);
 }
+
 export const Route = createFileRoute("/post/$postId/")({
   component: Post,
 });
@@ -18,16 +19,26 @@ function Post() {
   const [post, setPost] = useState({});
   const [comments, setComments] = useState([]);
   const [tags, setTags] = useState([]);
+  const [currentUserId, setCurrentUserId] = useState(null);
 
-  console.log(params.postId);
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      try {
+        const payload = JSON.parse(atob(token.split(".")[1]));
+        setCurrentUserId(payload.id);
+      } catch (error) {
+        console.error("Error parsing token:", error);
+      }
+    }
+  }, []);
+
   const GetPost = useCallback(async () => {
     const response = await fetch(
       `http://127.0.0.1:8000/api/posts/${params.postId}/`,
-      {
-        method: "GET",
-      }
+      { method: "GET" }
     );
-    if (response.status === 200) {
+    if (response.ok) {
       const result = await response.json();
       setPost(result[0]);
     }
@@ -36,11 +47,9 @@ function Post() {
   const GetComments = useCallback(async () => {
     const response = await fetch(
       `http://127.0.0.1:8000/api/posts/${params.postId}/comments/`,
-      {
-        method: "GET",
-      }
+      { method: "GET" }
     );
-    if (response.status === 200) {
+    if (response.ok) {
       const result = await response.json();
       setComments(result);
     }
@@ -49,23 +58,50 @@ function Post() {
   const GetTags = useCallback(async () => {
     const response = await fetch(
       `http://127.0.0.1:8000/api/posts/${params.postId}/tags/`,
-      {
-        method: "GET",
-      }
+      { method: "GET" }
     );
-    if (response.status === 200) {
+    if (response.ok) {
       const result = await response.json();
       setTags(result);
     }
   }, [params.postId]);
 
-  useEffect(() => {
-    async function query() {
-      await GetPost();
-      await GetComments();
-      await GetTags();
+  const handleDeleteComment = async (commentId) => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      alert("Требуется авторизация!");
+      return;
     }
-    query();
+
+    try {
+      const response = await fetch(
+        `http://127.0.0.1:8000/api/comments/${commentId}/`,
+        {
+          method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      if (response.ok) {
+        await GetComments();
+      } else {
+        const errorData = await response.json();
+        alert(`Ошибка: ${errorData.detail || "Неизвестная ошибка"}`);
+      }
+    } catch (error) {
+      console.error("Ошибка:", error);
+      alert("Не удалось соединиться с сервером");
+    }
+  };
+
+  useEffect(() => {
+    async function loadData() {
+      await Promise.all([GetPost(), GetComments(), GetTags()]);
+    }
+    loadData();
   }, [GetPost, GetComments, GetTags]);
 
   return (
@@ -138,6 +174,14 @@ function Post() {
                 {formatCreationTime(comment.creation_time)}
               </div>
               {/* <button>удалить комментарий</button> */}
+              {currentUserId === comment.user_id && (
+                <button
+                  onClick={() => handleDeleteComment(comment.id)}
+                  className="rounded-2xl bg-pink-300 px-2 py-1 text-white font-light hover:bg-pink-400 transition-colors"
+                >
+                  Удалить
+                </button>
+              )}
             </div>
           </div>
         ))}

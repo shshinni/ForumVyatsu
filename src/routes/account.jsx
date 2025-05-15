@@ -116,6 +116,29 @@ function Account() {
       console.log(result);
     }
   }
+  async function handleDeletePost(postId) {
+    try {
+      const response = await fetch(
+        `http://127.0.0.1:8000/api/posts/${postId}/`,
+        {
+          method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.detail || "Ошибка удаления");
+      }
+
+      setPosts((prev) => prev.filter((post) => post.id !== postId));
+    } catch (error) {
+      console.error("Ошибка при удалении:", error.message);
+      alert("Не удалось удалить пост");
+    }
+  }
   return (
     <Container>
       <div className="mb-10">
@@ -199,6 +222,7 @@ function Account() {
                   name={items.post_name}
                   comments_num={items.comments_num}
                   creation_time={items.creation_time}
+                  onDelete={handleDeletePost}
                 />
               ))}
             </div>
