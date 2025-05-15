@@ -8,7 +8,7 @@ import { useCallback, useEffect, useState } from "react";
 import Container from "../../../components/Container";
 import PostButton from "../../../components/PostButton";
 import { ArrowRightIcon } from "@heroicons/react/24/solid";
-import photo from "/programming-background-with-person-working-with-codes-computer.jpg";
+import photo from "/programming-background-with-person-working-with-codes-computer.png";
 import { useContext } from "react";
 import { UserContext } from "../../../context/UserContext";
 
@@ -214,9 +214,9 @@ function Group() {
             ))}
           </div>
 
-          <button className="block ml-auto mr-6 mb-2 cursor-pointer">
+          {/* <button className="block ml-auto mr-6 mb-2 cursor-pointer">
             <ArrowRightIcon className="size-5 text-[#FA7D9F]" />
-          </button>
+          </button> */}
         </div>
       </div>
     </Container>

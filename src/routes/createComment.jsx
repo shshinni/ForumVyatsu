@@ -85,7 +85,7 @@ function CreateComment() {
               type="text"
               rows={10}
               placeholder="Ваш ответ"
-              error={formState.errors.description?.message}
+              error={formState.errors.comment_text?.message}
               {...field}
             />
           )}

@@ -119,8 +119,8 @@ function CreatePost() {
           render={({ field }) => (
             <TextArea
               rows={10}
-              placeholder="Текст поста : Ваш вопрос или история и #тег"
-              error={formState.errors.post_content?.message}
+              placeholder="Текст поста"
+              error={formState.errors.post_text?.message}
               {...field}
               className="bg-[#FFFFFF] w-full p-4 text-Unbounded text-gray-800 rounded-4xl resize-none shadow-[4px_4px_10px_#ffd3d3] focus:outline-none"
             />
@@ -142,7 +142,7 @@ function CreatePost() {
             <Input
               type="text"
               placeholder="Название темы поста"
-              error={formState.errors.post_title?.message}
+              error={formState.errors.post_name?.message}
               {...field}
               className="bg-[#FFFFFF] w-full p-3 text-Unbounded rounded-full shadow-[4px_4px_10px_#ffd3d3] focus:outline-none"
             />

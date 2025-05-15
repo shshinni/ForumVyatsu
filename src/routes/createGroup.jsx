@@ -70,8 +70,8 @@ function CreateGroup() {
           rules={{
             required: "Это поле обязательно",
             maxLength: {
-              value: 20,
-              message: "Не более 20 символов",
+              value: 25,
+              message: "Не более 25 символов",
             },
           }}
           render={({ field }) => (
