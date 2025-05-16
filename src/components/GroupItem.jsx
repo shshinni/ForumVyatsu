@@ -18,9 +18,9 @@ export default function GroupItem({ name, idGroup }) {
       </div>
       <Link
         href={`/group/${idGroup}`}
-        className="bg-[#FE6B91] rounded-3xl px-3 py-1 cursor-pointer"
+        className="bg-[#FE6B91] rounded-3xl px-3 py-1 cursor-pointer text-sm text-white font-light text-center mt-auto"
       >
-        <span className="text-sm text-white font-light">Узнать больше</span>
+        Узнать больше
       </Link>
     </div>
   );

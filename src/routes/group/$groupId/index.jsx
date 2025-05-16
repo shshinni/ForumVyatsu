@@ -168,20 +168,23 @@ function Group() {
   return (
     <Container>
       <div>
-        <div className="grid grid-cols-[auto_1fr] gap-10">
-          <img src={photo} className="rounded-3xl" alt="Picture Account" />
+        <div className="grid sm:grid-cols-[auto_1fr] gap-10">
+          <img
+            src={photo}
+            className="rounded-3xl max-sm:mx-auto"
+            alt="Picture Account"
+          />
           <div className="bg-[#FFEFF3] rounded-xl flex-1 py-3 px-5">
             <div className="flex justify-between">
               <div className="flex-1">
-                <h1 className="font-semibold text-xl mb-1">
+                <h1 className="font-semibold text-xl mb-1 break-all">
                   {group.group_name}
                 </h1>
-
                 <div className="h-[1px] bg-black/50"></div>
               </div>
             </div>
 
-            <div className="font-light mt-5">{group.description}</div>
+            <div className="font-light mt-5 break-all">{group.description}</div>
             <div className="flex justify-end gap-5 mt-9">
               {user?.id &&
                 !isAdmin &&
@@ -204,7 +207,7 @@ function Group() {
                 <Link
                   to={"/createPost"}
                   search={{ groupId: params.groupId }}
-                  className="bg-[#A987DF] rounded-3xl py-1 px-4 cursor-pointer text-sm text-white"
+                  className="bg-[#A987DF] rounded-3xl py-1 px-4 cursor-pointer text-sm text-white text-center"
                 >
                   Добавить пост
                 </Link>
@@ -212,7 +215,7 @@ function Group() {
               {user?.id && isAdmin && (
                 <button
                   onClick={onDelete}
-                  className="bg-[#A987DF] rounded-3xl py-1 px-4 cursor-pointer text-sm text-white"
+                  className="bg-[#A987DF] rounded-3xl py-1 px-4 cursor-pointer text-sm text-white text-center"
                 >
                   Удалить сообщество
                 </button>
@@ -222,7 +225,7 @@ function Group() {
         </div>
         <div className="border-[#8C64D8] border rounded-xl mt-15">
           <div className="flex justify-center">
-            <h2 className="border-[#8C64D8] border rounded-xl px-15 py-0.5 my-5 font-medium text-[#8C64D8]">
+            <h2 className="border-[#8C64D8] border rounded-xl sm:px-15 px-6 py-0.5 my-5 font-medium text-[#8C64D8]">
               Посты сообщества
             </h2>
           </div>

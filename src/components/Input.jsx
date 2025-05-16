@@ -1,12 +1,3 @@
-// export function Input({ textPlaceholder }) {
-//   return (
-//     <input
-//       type="text"
-//       placeholder={textPlaceholder}
-//       className="bg-white rounded-3xl mt-4 w-full p-2.5 text-sm font-light border border-[#FEC9D7] focus:border-[#FE6B91] outline-none"
-//     />
-//   );
-// }
 import { forwardRef } from "react";
 
 const Input = forwardRef((props, ref) => {

@@ -11,7 +11,7 @@ export default function GroupButton({ name, idGroup }) {
         <div className="flex items-center">
           <img src={lkPhoto} className="max-w-7" alt="Picture Account Group" />
           <div className="flex gap-4">
-            <span className="rounded-xl p-1 text-sm">{name}</span>
+            <span className="rounded-xl p-1 text-sm break-all">{name}</span>
           </div>
         </div>
       </Link>

@@ -54,127 +54,129 @@ function Register() {
   }
 
   return (
-    <div className="px-2 max-w-md bg-[#FFEFF3] rounded-2xl mx-auto py-15">
-      <h1 className="text-black font-medium text-center uppercase text-sm">
-        Регистрация
-      </h1>
-      <form
-        onSubmit={handleSubmit((data) => onsubmit(data))}
-        className="mx-auto mt-6 max-w-[270px]"
-      >
-        <Controller
-          control={control}
-          name="user_name"
-          defaultValue={""}
-          rules={{
-            required: "Это поле обязательно",
-          }}
-          render={({ field }) => (
-            <Input
-              type="text"
-              placeholder="Имя пользователя*"
-              error={formState.errors.user_name?.message}
-              {...field}
-            />
-          )}
-        />
-        <Controller
-          control={control}
-          name="login"
-          defaultValue={""}
-          rules={{
-            required: "Это поле обязательно",
-          }}
-          render={({ field }) => (
-            <Input
-              type="text"
-              placeholder="Логин*"
-              error={formState.errors.login?.message}
-              {...field}
-            />
-          )}
-        />
-        <Controller
-          control={control}
-          name="password"
-          defaultValue={""}
-          rules={{
-            required: "Это поле обязательно",
-            minLength: {
-              value: 8,
-              message: "Не менее 8 символов",
-            },
-          }}
-          render={({ field }) => (
-            <Input
-              type="password"
-              placeholder="Пароль*"
-              error={formState.errors.password?.message}
-              {...field}
-            />
-          )}
-        />
-        <Controller
-          control={control}
-          name="repeatPassword"
-          defaultValue={""}
-          rules={{
-            required: "Это поле обязательно",
-            validate: (value) =>
-              value === control._formValues.password || "Пароли не совпадают",
-          }}
-          render={({ field }) => (
-            <Input
-              type="password"
-              placeholder="Повторите пароль*"
-              error={formState.errors.repeatPassword?.message}
-              {...field}
-            />
-          )}
-        />
-        <span className="text-sm block mt-8 text-center">
-          К какой категории вы относитесь?*
-        </span>
-
-        <div className="flex justify-between mt-3">
+    <div className="px-2">
+      <div className="px-2 max-w-md bg-[#FFEFF3] rounded-2xl mx-auto py-15">
+        <h1 className="text-black font-medium text-center uppercase text-sm">
+          Регистрация
+        </h1>
+        <form
+          onSubmit={handleSubmit((data) => onsubmit(data))}
+          className="mx-auto mt-6 max-w-[270px]"
+        >
           <Controller
             control={control}
-            name="is_studen"
-            defaultValue={"0"}
+            name="user_name"
+            defaultValue={""}
+            rules={{
+              required: "Это поле обязательно",
+            }}
             render={({ field }) => (
-              <RadioButton
+              <Input
+                type="text"
+                placeholder="Имя пользователя*"
+                error={formState.errors.user_name?.message}
                 {...field}
-                value="0"
-                defaultChecked
-                label="Абитуриент"
               />
             )}
           />
           <Controller
             control={control}
-            name="is_studen"
+            name="login"
+            defaultValue={""}
+            rules={{
+              required: "Это поле обязательно",
+            }}
             render={({ field }) => (
-              <RadioButton {...field} value="1" label="Студент" />
+              <Input
+                type="text"
+                placeholder="Логин*"
+                error={formState.errors.login?.message}
+                {...field}
+              />
             )}
           />
+          <Controller
+            control={control}
+            name="password"
+            defaultValue={""}
+            rules={{
+              required: "Это поле обязательно",
+              minLength: {
+                value: 8,
+                message: "Не менее 8 символов",
+              },
+            }}
+            render={({ field }) => (
+              <Input
+                type="password"
+                placeholder="Пароль*"
+                error={formState.errors.password?.message}
+                {...field}
+              />
+            )}
+          />
+          <Controller
+            control={control}
+            name="repeatPassword"
+            defaultValue={""}
+            rules={{
+              required: "Это поле обязательно",
+              validate: (value) =>
+                value === control._formValues.password || "Пароли не совпадают",
+            }}
+            render={({ field }) => (
+              <Input
+                type="password"
+                placeholder="Повторите пароль*"
+                error={formState.errors.repeatPassword?.message}
+                {...field}
+              />
+            )}
+          />
+          <span className="text-sm block mt-8 text-center">
+            К какой категории вы относитесь?*
+          </span>
+
+          <div className="flex justify-between mt-3">
+            <Controller
+              control={control}
+              name="is_studen"
+              defaultValue={"0"}
+              render={({ field }) => (
+                <RadioButton
+                  {...field}
+                  value="0"
+                  defaultChecked
+                  label="Абитуриент"
+                />
+              )}
+            />
+            <Controller
+              control={control}
+              name="is_studen"
+              render={({ field }) => (
+                <RadioButton {...field} value="1" label="Студент" />
+              )}
+            />
+          </div>
+
+          <div className="flex justify-center mt-10">
+            <button className="relative text-white bg-[#FE6B91] rounded-3xl w-full max-w-[260px] py-2 px-3 cursor-pointer">
+              <span className="inline-block w-full text-center">
+                Зарегистрироваться
+              </span>
+              <ChevronDownIcon className="absolute right-1 top-1/2 -translate-y-1/2 size-5 text-white rotate-270" />
+            </button>
+          </div>
+        </form>
+
+        <div className="text-center mt-8 font-light text-xs">
+          <span>Уже есть аккаунт? </span>
+
+          <Link href="/login" className="underline cursor-pointer">
+            Войти
+          </Link>
         </div>
-
-        <div className="flex justify-center mt-10">
-          <button className="relative text-white bg-[#FE6B91] rounded-3xl w-full max-w-[260px] py-2 px-3 cursor-pointer">
-            <span className="inline-block w-full text-center">
-              Зарегистрироваться
-            </span>
-            <ChevronDownIcon className="absolute right-1 top-1/2 -translate-y-1/2 size-5 text-white rotate-270" />
-          </button>
-        </div>
-      </form>
-
-      <div className="text-center mt-8 font-light text-xs">
-        <span>Уже есть аккаунт? </span>
-
-        <Link href="/login" className="underline cursor-pointer">
-          Войти
-        </Link>
       </div>
     </div>
   );

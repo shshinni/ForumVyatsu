@@ -34,7 +34,7 @@ export default function Questions() {
   ];
 
   return (
-    <div className="mt-22">
+    <div className="mt-22 ">
       <h2 className="text-center font-medium mb-8">Часто задаваемые вопросы</h2>
       <div className="max-w-2xl mx-auto space-y-3">
         {questions.map((item) => (

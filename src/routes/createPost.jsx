@@ -99,86 +99,87 @@ function CreatePost() {
   }
 
   return (
-    <div className="max-w-md bg-[#FFEFF3] rounded-2xl mx-auto py-15 px-10">
-      <h1 className="text-black font-medium text-center uppercase text-sm">
-        Новый пост
-      </h1>
+    <div className="px-2">
+      <div className="max-w-md bg-[#FFEFF3] rounded-2xl mx-auto py-15 px-10">
+        <h1 className="text-black font-medium text-center uppercase text-sm">
+          Новый пост
+        </h1>
 
-      <form onSubmit={handleSubmit(onSubmit)} className="mx-auto mt-6">
-        <Controller
-          defaultValue={""}
-          control={control}
-          name="post_text"
-          rules={{
-            required: "Это поле обязательно",
-            maxLength: {
-              value: 500,
-              message: "Не более 500 символов",
-            },
-          }}
-          render={({ field }) => (
-            <TextArea
-              rows={10}
-              placeholder="Текст поста"
-              error={formState.errors.post_text?.message}
-              {...field}
-              className="bg-[#FFFFFF] w-full p-4 text-Unbounded text-gray-800 rounded-4xl resize-none shadow-[4px_4px_10px_#ffd3d3] focus:outline-none"
-            />
-          )}
-        />
+        <form onSubmit={handleSubmit(onSubmit)} className="mx-auto mt-6">
+          <Controller
+            defaultValue={""}
+            control={control}
+            name="post_text"
+            rules={{
+              required: "Это поле обязательно",
+              maxLength: {
+                value: 500,
+                message: "Не более 500 символов",
+              },
+            }}
+            render={({ field }) => (
+              <TextArea
+                rows={10}
+                placeholder="Текст поста"
+                error={formState.errors.post_text?.message}
+                {...field}
+                className="bg-[#FFFFFF] w-full p-4 text-Unbounded text-gray-800 rounded-4xl resize-none shadow-[4px_4px_10px_#ffd3d3] focus:outline-none"
+              />
+            )}
+          />
 
-        <Controller
-          defaultValue={""}
-          control={control}
-          name="post_name"
-          rules={{
-            required: "Это поле обязательно",
-            maxLength: {
-              value: 50,
-              message: "Не более 50 символов",
-            },
-          }}
-          render={({ field }) => (
-            <Input
-              type="text"
-              placeholder="Название темы поста"
-              error={formState.errors.post_name?.message}
-              {...field}
-              className="bg-[#FFFFFF] w-full p-3 text-Unbounded rounded-full shadow-[4px_4px_10px_#ffd3d3] focus:outline-none"
-            />
-          )}
-        />
-        <div className="relative mt-4">
-          <button
-            type="button"
-            onClick={() => setIsTagsDropdownOpen(!isTagsDropdownOpen)}
-            className="w-full px-3 py-2 bg-purple-100 text-purple-800 rounded-full hover:bg-purple-200 transition-colors text-left "
-          >
-            Выбрать тег
-          </button>
+          <Controller
+            defaultValue={""}
+            control={control}
+            name="post_name"
+            rules={{
+              required: "Это поле обязательно",
+              maxLength: {
+                value: 50,
+                message: "Не более 50 символов",
+              },
+            }}
+            render={({ field }) => (
+              <Input
+                type="text"
+                placeholder="Название темы поста"
+                error={formState.errors.post_name?.message}
+                {...field}
+                className="bg-[#FFFFFF] w-full p-3 text-Unbounded rounded-full shadow-[4px_4px_10px_#ffd3d3] focus:outline-none"
+              />
+            )}
+          />
+          <div className="relative mt-4">
+            <button
+              type="button"
+              onClick={() => setIsTagsDropdownOpen(!isTagsDropdownOpen)}
+              className="w-full px-3 py-2 bg-purple-100 text-purple-800 rounded-full hover:bg-purple-200 transition-colors text-left "
+            >
+              Выбрать тег
+            </button>
 
-          {isTagsDropdownOpen && (
-            <div className="absolute top-full left-0 right-0 mt-2 bg-white border border-purple-200 rounded-lg shadow-lg p-4 z-10">
-              <div className="space-y-2">
-                {tags.map((tag) => (
-                  <label
-                    key={tag.id}
-                    className="flex items-center space-x-2 cursor-pointer"
-                  >
-                    <input
-                      type="checkbox"
-                      checked={selectedTags.some((t) => t.id === tag.id)}
-                      onChange={(e) => {
-                        if (e.target.checked) {
-                          setSelectedTags([...selectedTags, tag]);
-                        } else {
-                          setSelectedTags(
-                            selectedTags.filter((t) => t.id !== tag.id)
-                          );
-                        }
-                      }}
-                      id={`tag-${tag.id}`}
-                      className="
+            {isTagsDropdownOpen && (
+              <div className="absolute top-full left-0 right-0 mt-2 bg-white border border-purple-200 rounded-lg shadow-lg p-4 z-10">
+                <div className="space-y-2">
+                  {tags.map((tag) => (
+                    <label
+                      key={tag.id}
+                      className="flex items-center space-x-2 cursor-pointer"
+                    >
+                      <input
+                        type="checkbox"
+                        checked={selectedTags.some((t) => t.id === tag.id)}
+                        onChange={(e) => {
+                          if (e.target.checked) {
+                            setSelectedTags([...selectedTags, tag]);
+                          } else {
+                            setSelectedTags(
+                              selectedTags.filter((t) => t.id !== tag.id)
+                            );
+                          }
+                        }}
+                        id={`tag-${tag.id}`}
+                        className="
               appearance-none 
               h-5 w-5 
               border-2 border-purple-400 
@@ -200,37 +201,37 @@ function CreatePost() {
               checked:after:border-b-[1.5px]
               checked:after:rotate-45
             "
-                    />
-                    <span className="text-gray-700 font-light text-sm">
-                      {tag.tag_name}
-                    </span>
-                  </label>
-                ))}
+                      />
+                      <span className="text-gray-700 font-light text-sm">
+                        {tag.tag_name}
+                      </span>
+                    </label>
+                  ))}
+                </div>
               </div>
-            </div>
-          )}
-        </div>
-        <div className="mt-2 flex flex-wrap gap-2">
-          {selectedTags.map((tag) => (
-            <span
-              key={tag.id}
-              className="px-3 py-1 bg-purple-100 text-purple-800 rounded-full text-sm"
-            >
-              #{tag.tag_name}
-            </span>
-          ))}
-        </div>
+            )}
+          </div>
+          <div className="mt-2 flex flex-wrap gap-2">
+            {selectedTags.map((tag) => (
+              <span
+                key={tag.id}
+                className="px-3 py-1 bg-purple-100 text-purple-800 rounded-full text-sm"
+              >
+                #{tag.tag_name}
+              </span>
+            ))}
+          </div>
 
-        <Controller
-          control={control}
-          name="isUrgently"
-          render={({ field }) => (
-            <label className="flex items-center space-x-2 cursor-pointer mt-3">
-              <input
-                type="checkbox"
-                checked={field.value === 1}
-                onChange={(e) => field.onChange(e.target.checked ? 1 : 0)}
-                className="appearance-none 
+          <Controller
+            control={control}
+            name="isUrgently"
+            render={({ field }) => (
+              <label className="flex items-center space-x-2 cursor-pointer mt-3">
+                <input
+                  type="checkbox"
+                  checked={field.value === 1}
+                  onChange={(e) => field.onChange(e.target.checked ? 1 : 0)}
+                  className="appearance-none 
               h-5 w-5 
               border-2 border-pink-300 
               rounded 
@@ -251,23 +252,24 @@ function CreatePost() {
               checked:after:border-b-[1.5px]
               checked:after:rotate-45
             "
-              />
-              <span className="text-sm font-light">
-                Добавить статус "Срочно"
-              </span>
-            </label>
-          )}
-        />
+                />
+                <span className="text-sm font-light">
+                  Добавить статус "Срочно"
+                </span>
+              </label>
+            )}
+          />
 
-        <div className="flex justify-center mt-10">
-          <button className="relative text-white bg-[#FE6B91] rounded-3xl w-full py-2 px-3 cursor-pointer">
-            <span className="inline-block w-full text-center">
-              Добавить пост
-            </span>
-            <ChevronDownIcon className="absolute right-3 top-1/2 -translate-y-1/2 size-5 text-white rotate-270" />
-          </button>
-        </div>
-      </form>
+          <div className="flex justify-center mt-10">
+            <button className="relative text-white bg-[#FE6B91] rounded-3xl w-full py-2 px-3 cursor-pointer">
+              <span className="inline-block w-full text-center">
+                Добавить пост
+              </span>
+              <ChevronDownIcon className="absolute right-3 top-1/2 -translate-y-1/2 size-5 text-white rotate-270" />
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
   );
 }

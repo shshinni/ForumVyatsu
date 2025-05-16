@@ -109,7 +109,9 @@ function Post() {
       <div className="flex flex-col items-center bg-white">
         <div className="bg-pink-100 px-5 py-4 rounded-3xl w-full shadow-md">
           <div className="flex justify-between">
-            <div className="text-2xl font-bold mb-4">{post.post_name}</div>
+            <div className="text-2xl font-bold mb-4 break-all">
+              {post.post_name}
+            </div>
             <div>
               {!!post.isUrgently && (
                 <span className="bg-pink-400 text-white px-3 py-1 rounded-full text-sm font-light uppercase">
@@ -118,7 +120,7 @@ function Post() {
               )}
             </div>
           </div>
-          <p className="mb-4">{post.post_text}</p>
+          <p className="mb-4 break-all">{post.post_text}</p>
 
           <div className="flex flex-wrap gap-4 mt-8 mb-4">
             {tags?.map((tag) => (

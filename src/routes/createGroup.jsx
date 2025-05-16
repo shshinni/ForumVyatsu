@@ -55,56 +55,57 @@ function CreateGroup() {
   }
 
   return (
-    <div className="max-w-md bg-[#FFEFF3] rounded-2xl mx-auto py-15 px-10">
-      <h1 className="text-black font-medium text-center uppercase text-sm">
-        Новое сообщество
-      </h1>
-      <form
-        onSubmit={handleSubmit((data) => onsubmit(data))}
-        className="mx-auto mt-6"
-      >
-        <Controller
-          control={control}
-          name="group_name"
-          defaultValue={""}
-          rules={{
-            required: "Это поле обязательно",
-            maxLength: {
-              value: 25,
-              message: "Не более 25 символов",
-            },
-          }}
-          render={({ field }) => (
-            <Input
-              type="text"
-              placeholder="Название сообщества"
-              error={formState.errors.group_name?.message}
-              {...field}
-            />
-          )}
-        />
-        <Controller
-          control={control}
-          name="description"
-          defaultValue={""}
-          rules={{
-            required: "Это поле обязательно",
-            maxLength: {
-              value: 50,
-              message: "Не более 50 символов",
-            },
-          }}
-          render={({ field }) => (
-            <TextArea
-              type="text"
-              rows={10}
-              placeholder="Описание сообщества"
-              error={formState.errors.description?.message}
-              {...field}
-            />
-          )}
-        />
-        {/* <div className="flex justify-center mt-10">
+    <div className="px-2">
+      <div className="max-w-md bg-[#FFEFF3] rounded-2xl mx-auto py-15 px-10">
+        <h1 className="text-black font-medium text-center uppercase text-sm">
+          Новое сообщество
+        </h1>
+        <form
+          onSubmit={handleSubmit((data) => onsubmit(data))}
+          className="mx-auto mt-6"
+        >
+          <Controller
+            control={control}
+            name="group_name"
+            defaultValue={""}
+            rules={{
+              required: "Это поле обязательно",
+              maxLength: {
+                value: 25,
+                message: "Не более 25 символов",
+              },
+            }}
+            render={({ field }) => (
+              <Input
+                type="text"
+                placeholder="Название сообщества"
+                error={formState.errors.group_name?.message}
+                {...field}
+              />
+            )}
+          />
+          <Controller
+            control={control}
+            name="description"
+            defaultValue={""}
+            rules={{
+              required: "Это поле обязательно",
+              maxLength: {
+                value: 50,
+                message: "Не более 50 символов",
+              },
+            }}
+            render={({ field }) => (
+              <TextArea
+                type="text"
+                rows={10}
+                placeholder="Описание сообщества"
+                error={formState.errors.description?.message}
+                {...field}
+              />
+            )}
+          />
+          {/* <div className="flex justify-center mt-10">
           <input className="relative text-white bg-[#FE6B91] rounded-3xl w-full py-2 px-3 cursor-pointer">
             <span className="inline-block w-full text-center">
               Добавить фото
@@ -112,20 +113,21 @@ function CreateGroup() {
             <ChevronDownIcon className="absolute right-3 top-1/2 -translate-y-1/2 size-5 text-white rotate-270" />
           </input>
         </div> */}
-        {/* <input
+          {/* <input
           type="file"
           placeholder="Добавить фото"
           className="mt-4 p-2.5 text-sm font-light bg-[#FBA9BF] rounded-3xl w-full py-2 px-3 cursor-pointer"
         /> */}
-        <div className="flex justify-center mt-10">
-          <button className="relative text-white bg-[#FE6B91] rounded-3xl w-full py-2 px-3 cursor-pointer">
-            <span className="inline-block w-full text-center">
-              Добавить сообщество
-            </span>
-            <ChevronDownIcon className="absolute right-3 top-1/2 -translate-y-1/2 size-5 text-white rotate-270" />
-          </button>
-        </div>
-      </form>
+          <div className="flex justify-center mt-10">
+            <button className="relative text-white bg-[#FE6B91] rounded-3xl w-full py-2 px-3 cursor-pointer">
+              <span className="inline-block w-full text-center">
+                Добавить сообщество
+              </span>
+              <ChevronDownIcon className="absolute right-3 top-1/2 -translate-y-1/2 size-5 text-white rotate-270" />
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
   );
 }

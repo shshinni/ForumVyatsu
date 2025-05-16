@@ -145,7 +145,7 @@ function Account() {
         <div className="flex items-center gap-10">
           <img
             src={lkPhoto}
-            className="max-w-54 w-full"
+            className="max-w-54 max-sm:hidden w-full"
             alt="Picture Account"
           />
           <div className="bg-[#FFEFF3] rounded-xl flex-1 py-3 px-5">
@@ -162,7 +162,7 @@ function Account() {
                     />
                   </div>
                 ) : (
-                  <h1 className="font-semibold text-xl mb-1">
+                  <h1 className="font-semibold text-xl mb-1 break-all">
                     {user?.username}
                   </h1>
                 )}
@@ -194,27 +194,27 @@ function Account() {
             <div className="flex justify-end gap-5 mt-5">
               <Link
                 href="/createPost"
-                className="bg-[#A987DF] rounded-3xl py-1 px-4 cursor-pointer text-sm text-white"
+                className="bg-[#A987DF] rounded-3xl py-1 px-4 cursor-pointer text-sm text-white text-center"
               >
                 Добавить пост
               </Link>
               <Link
                 href="/createGroup"
-                className="bg-[#A987DF] rounded-3xl py-1 px-4 cursor-pointer text-sm text-white"
+                className="bg-[#A987DF] rounded-3xl py-1 px-4 cursor-pointer text-sm text-white text-center"
               >
                 Добавить сообщество
               </Link>
             </div>
           </div>
         </div>
-        <div className="grid grid-cols-[2fr_1fr] gap-6 mt-10">
+        <div className="grid sm:grid-cols-[2fr_1fr] gap-6 mt-10">
           <div className="border-[#8C64D8] border rounded-xl ">
             <div className="flex justify-center">
               <h2 className="border-[#8C64D8] border rounded-xl px-15 py-0.5 my-5 font-medium text-[#8C64D8]">
                 Посты
               </h2>
             </div>
-            <div className="px-7">
+            <div className="px-7 ">
               {posts.map((items) => (
                 <PostButton
                   key={items.id}
@@ -226,10 +226,6 @@ function Account() {
                 />
               ))}
             </div>
-
-            {/* <button className="block ml-auto mr-6 mb-2 cursor-pointer">
-              <ArrowRightIcon className="size-5 text-[#FA7D9F]" />
-            </button> */}
           </div>
           <div className="border-[#8C64D8] border-dashed border rounded-xl bg-[#F6F3FC]">
             <div className="flex justify-center">

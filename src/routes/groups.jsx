@@ -61,7 +61,7 @@ function Groups() {
           />
         </button>
       </div>
-      <div className="grid-cols-4 grid gap-8 ">
+      <div className="grid-cols-2 md:grid-cols-4 grid gap-8 ">
         {filteredGroups?.length ? (
           filteredGroups.map((items) => (
             <GroupItem
